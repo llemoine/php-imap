@@ -13,6 +13,7 @@
 namespace Webklex\PHPIMAP\Connection\Protocols;
 
 use Webklex\PHPIMAP\Config;
+use Webklex\PHPIMAP\Connection\SslOptions;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 use Webklex\PHPIMAP\IMAP;
 
@@ -179,7 +180,12 @@ abstract class Protocol implements ProtocolInterface {
      */
     public function setSslOptions(array $options): Protocol
     {
-        $this->ssl_options = $options;
+        foreach ($options as $name => $value) {
+            /* Checks if the option name and value are valid for security */
+            if (SslOptions::isOptionValid($name, $value)) {
+                $this->ssl_options[$name] = $value;
+            }
+        }
 
         return $this;
     }

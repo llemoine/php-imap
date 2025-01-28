@@ -15,6 +15,7 @@ namespace Tests;
 use PHPUnit\Framework\TestCase;
 use Webklex\PHPIMAP\Config;
 use Webklex\PHPIMAP\Connection\Protocols\ImapProtocol;
+use Webklex\PHPIMAP\Connection\SslOptions;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 
 class ImapProtocolTest extends TestCase {
@@ -50,9 +51,12 @@ class ImapProtocolTest extends TestCase {
         self::assertSame("ssl", $protocol->getEncryption());
 
         $protocol->setSslOptions([
-            'verify_peer' => true,
-            'cafile' => '/dummy/path/for/testing',
-            'peer_fingerprint' => ['md5' => 40],
+            SslOptions::VERIFY_PEER => true,
+            SslOptions::CAFILE => '/dummy/path/for/testing',
+            SslOptions::VERIFY_DEPTH => true,
+            SslOptions::PEER_FINGERPRINT => ['md5' => 40],
+            'foo' => 'bar',
+
         ]);
 
         self::assertSame([
